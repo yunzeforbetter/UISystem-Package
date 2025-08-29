@@ -1,12 +1,11 @@
-# Unity UI Framework - 高性能企业级UI系统
+# UISystem-Package - 高性能UI系统
 
 [![Unity Version](https://img.shields.io/badge/Unity-2022.3%2B-blue.svg)](https://unity3d.com/get-unity/download)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Release](https://img.shields.io/badge/Release-v1.0.0-orange.svg)](https://github.com/yourusername/Unity-UI-Framework/releases)
 
 ## 🚀 项目简介
 
-Unity UI Framework 是一个功能强大、高性能的企业级UI系统，专为Unity游戏开发设计。该框架集成了现代UI开发所需的核心功能，包括智能堆栈管理、虚拟化无限滚动、运行时动态图集优化和实时模糊背景效果。
+该框架集成了现代UI开发所需的核心功能，包括智能堆栈管理、虚拟化无限滚动、运行时动态图集优化和实时模糊背景效果。
 
 ## ✨ 核心特性
 
@@ -32,8 +31,8 @@ UIManager.Instance.CloseUI("UI/MainMenu");
 
 ```csharp
 // 初始化列表
-listView.Init(cellTemplate, OnCreateCell, OnShowCell);
-listView.StartShow(dataCount);
+listView.Configure<T>(path, OnCreateCell, OnShowCell);
+listView.SetDataSource(dataCount);
 
 // 动态刷新单个元素
 listView.TryRefreshCellRT(dataIndex);
@@ -47,10 +46,8 @@ listView.TryRefreshCellRT(dataIndex);
 
 ```csharp
 // 设置动态纹理
-dynamicAtlas.SetTexture(texturePath, isGray, isSynchronous, callback);
+DynamicRawImage.SetIcon(texturePath);
 
-// 移除纹理
-dynamicAtlas.RemoveImage(texturePath, isGray, callback);
 ```
 
 ### 🌫️ 实时模糊背景
@@ -63,8 +60,6 @@ dynamicAtlas.RemoveImage(texturePath, isGray, callback);
 // 启用模糊背景
 blurController.BlurBg();
 
-// 设置顶层面板
-blurController.SetTopPanel(uiId, onBlurComplete);
 ```
 
 ## 🛠️ 编辑器工具集
@@ -89,19 +84,18 @@ blurController.SetTopPanel(uiId, onBlurComplete);
 2. 进入 `Window > Package Manager`
 3. 点击左上角的 `+` 按钮
 4. 选择 `Add package from git URL`
-5. 输入：`https://github.com/yourusername/Unity-UI-Framework.git`
+5. 输入：`https://github.com/yunzeforbetter/UISystem-Package.git`
 
 或者在项目的 `Packages/manifest.json` 文件中添加：
 ```json
 {
   "dependencies": {
-    "com.framework.uisystem": "https://github.com/yourusername/Unity-UI-Framework.git"
+    "com.framework.uisystem": "https://github.com/yunzeforbetter/UISystem-Package.git"
   }
 }
 ```
 
 #### Unity Package导入
-1. 下载最新的 [Release版本](https://github.com/yourusername/Unity-UI-Framework/releases)
 2. 在Unity中选择 `Assets > Import Package > Custom Package`
 3. 选择下载的 `.unitypackage` 文件导入
 
@@ -126,7 +120,7 @@ public class UIInitializer : MonoBehaviour
 
 #### 2. 创建UI面板类
 ```csharp
-public class MainMenuPanel : UIBasePanel
+public class MainMenuPanel : UIPanelViewRef<MainMenuPanel>
 {
     // 定义UI层级
     public override E_UILayer UILayer => E_UILayer.Normal;
@@ -134,20 +128,15 @@ public class MainMenuPanel : UIBasePanel
     // 是否全屏显示
     public override bool IsFullScreen => true;
     
-    // 视图类型
-    public override E_UIViewType GetViewType() => E_UIViewType.Panel;
-    
-    // 绑定UI引用
-    public override void Bind(PrefabReference prefabReference)
+     public override void OnAwake()
     {
-        // 通过PrefabReference获取UI组件引用
-        var startButton = prefabReference.GetReference<Button>("StartButton");
-        var titleText = prefabReference.GetReference<Text>("TitleText");
-        
-        // 绑定事件
-        startButton.onClick.AddListener(OnStartButtonClick);
+        base.OnAwake();
     }
-    
+	public override void SetData(object data)
+    {
+        base.SetData(data);
+        Debug.Log($" SetData  {data}");
+    }
     // 显示时调用
     public override void OnShow()
     {
@@ -162,47 +151,6 @@ public class MainMenuPanel : UIBasePanel
         Debug.Log("主菜单面板关闭");
     }
     
-    private void OnStartButtonClick()
-    {
-        // 处理开始按钮点击事件
-        UIManager.Instance.OpenPanel<GamePanel>("UI/GamePanel");
-    }
-}
-```
-
-#### 3. 创建无限列表
-```csharp
-public class ItemListPanel : UIBasePanel
-{
-    private UIListView listView;
-    private List<ItemData> itemDataList;
-    
-    public override void Bind(PrefabReference prefabReference)
-    {
-        listView = prefabReference.GetReference<UIListView>("ItemListView");
-        var cellTemplate = prefabReference.GetReference<RectTransform>("ItemCell");
-        
-        // 初始化列表
-        listView.Init(cellTemplate, OnShowCell);
-    }
-    
-    public override void OnShow()
-    {
-        base.OnShow();
-        // 开始显示列表数据
-        listView.StartShow(itemDataList.Count);
-    }
-    
-    private void OnShowCell(int posIndex, int dataIndex)
-    {
-        // 获取单元格GameObject
-        var cellRT = listView.GetCellRTByPosIndex(posIndex);
-        var itemData = itemDataList[dataIndex];
-        
-        // 更新单元格UI
-        var nameText = cellRT.GetComponentInChildren<Text>();
-        nameText.text = itemData.name;
-    }
 }
 ```
 
@@ -295,9 +243,9 @@ A:
 我们欢迎社区贡献！请遵循以下步骤：
 
 1. Fork 本项目
-2. 创建功能分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
-4. 推送到分支 (`git push origin feature/AmazingFeature`)
+2. 创建功能分支 (`git checkout -b feature/develop`)
+3. 提交更改 (`git commit -m 'Add some Todo'`)
+4. 推送到分支 (`git push origin feature/develop`)
 5. 创建 Pull Request
 
 ### 开发路线图
@@ -326,35 +274,15 @@ A:
 - 社区开发者的宝贵反馈和建议
 - 所有为项目贡献代码的开发者
 
-特别感谢：
-- [@contributor1](https://github.com/contributor1) - 核心架构设计
-- [@contributor2](https://github.com/contributor2) - 性能优化
-- [@contributor3](https://github.com/contributor3) - 文档完善
-
-## 📞 联系我们
-
-- **邮箱**：[your-email@example.com](mailto:your-email@example.com)
-- **QQ群**：123456789
-- **微信群**：扫描二维码加入
-- **Discord**：[加入我们的服务器](https://discord.gg/yourinvite)
-
-## 🔗 相关链接
-
-- [Unity官方文档](https://docs.unity3d.com/)
-- [UGUI最佳实践](https://docs.unity3d.com/Manual/UIBestPractices.html)
-- [Unity性能优化指南](https://docs.unity3d.com/Manual/MobileOptimisation.html)
-
 ---
 
 ⭐ **如果这个项目对您有帮助，请给我们一个Star！**
 
-🐛 **问题反馈**：[GitHub Issues](https://github.com/yourusername/Unity-UI-Framework/issues)
-
-💬 **功能建议**：[GitHub Discussions](https://github.com/yourusername/Unity-UI-Framework/discussions)
+🐛 **问题反馈**：[GitHub Issues](https://github.com/yunzeforbetter/UISystem-Package/issues)
 
 ## 更新日志
 
-### v1.0.0 (2024-XX-XX)
+### v1.0.0
 - 🎉 首次发布
 - ✨ 实现智能UI堆栈管理
 - ✨ 添加虚拟化无限列表
