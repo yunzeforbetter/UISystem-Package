@@ -1,0 +1,133 @@
+using UnityEngine;
+using UnityEditor;
+
+namespace UISystem
+{
+    [CustomEditor(typeof(UIListView), true)]
+    [CanEditMultipleObjects]
+    public class UIListViewInspector : UIScrollRectInspector
+    {
+        SerializedProperty m_Padding;
+        SerializedProperty m_Spacing;
+        SerializedProperty m_StartSide;
+        SerializedProperty m_ChildAlignment;
+        SerializedProperty m_Loop;
+        SerializedProperty m_CellRect;
+        SerializedProperty m_CellPivot;
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            
+            m_Padding = serializedObject.FindProperty("m_Padding");
+            m_Spacing = serializedObject.FindProperty("m_Spacing");
+            m_StartSide = serializedObject.FindProperty("m_StartSide");
+            m_ChildAlignment = serializedObject.FindProperty("m_ChildAlignment");
+            m_Loop = serializedObject.FindProperty("m_Loop");
+            m_CellRect = serializedObject.FindProperty("m_CellRect");
+            m_CellPivot = serializedObject.FindProperty("m_CellPivot");
+        }
+
+        public override void OnInspectorGUI()
+        {
+            serializedObject.Update();
+
+            if (DrawHeader("Scroll", "Scroll"))
+            {
+                BeginContent();
+                base.OnInspectorGUI();
+                EndContent();
+            }
+
+            if (DrawHeader("Layout", "Layout"))
+            {
+                BeginContent();
+                DrawLayout();
+                EndContent();
+            }
+
+            if (DrawHeader("Cell", "Cell"))
+            {
+                BeginContent();
+                DrawCell();
+                EndContent();
+            }
+
+            if (DrawHeader("Loop", "Loop"))
+            {
+                BeginContent();
+                DrawOthers();
+                EndContent();
+            }
+
+            serializedObject.ApplyModifiedProperties();
+        }
+
+        private void DrawLayout()
+        {
+            EditorGUILayout.PropertyField(m_Padding, true);
+            EditorGUILayout.PropertyField(m_Spacing, true);
+
+            string[] horizontalStartCornerOptions = { "Left", "Right" };
+            string[] verticalStartCornerOptions = { "Upper", "Lower" };
+            string[] startCornerOptions = m_MovementAxis.enumValueIndex == 0 ? horizontalStartCornerOptions : verticalStartCornerOptions;
+            m_StartSide.enumValueIndex = EditorGUILayout.Popup("Start Side", m_StartSide.enumValueIndex, startCornerOptions);
+            
+            string[] horizontalAlignmentOptions = { "Left", "Center", "Right" };
+            string[] verticalAlignmentOptions = { "Upper", "Middle", "Lower" };
+            string[] alignmentOptions = m_MovementAxis.enumValueIndex == 0 ? verticalAlignmentOptions : horizontalAlignmentOptions;
+            m_ChildAlignment.enumValueIndex = EditorGUILayout.Popup("Child Alignment", m_ChildAlignment.enumValueIndex, alignmentOptions);
+        }
+
+        private void DrawCell()
+        {
+            EditorGUILayout.PropertyField(m_CellRect, new GUIContent("cellRect", "必填 子元素的位置大小"));
+            EditorGUILayout.Space(5);
+            EditorGUILayout.PropertyField(m_CellPivot, new GUIContent("cellPivot", "必填 子元素的轴点"));
+        }
+
+        private void DrawOthers()
+        {
+            EditorGUILayout.PropertyField(m_Loop, new GUIContent("Loop", "Enable infinite scrolling"));
+        }
+
+        private void BeginContent()
+        {
+            EditorGUILayout.BeginHorizontal(GUILayout.MinHeight(10f));
+            GUILayout.Space(10f);
+            GUILayout.BeginVertical();
+            GUILayout.Space(2f);
+        }
+
+        private void EndContent()
+        {
+            GUILayout.Space(3f);
+            GUILayout.EndVertical();
+            EditorGUILayout.EndHorizontal();
+            GUILayout.Space(3f);
+        }
+
+        private bool DrawHeader(string text, string key)
+        {
+            bool state = EditorPrefs.GetBool(key, true);
+
+            GUILayout.Space(3f);
+            if (!state) GUI.backgroundColor = new Color(0.8f, 0.8f, 0.8f);
+            GUILayout.BeginHorizontal();
+            GUI.changed = true;
+
+            text = "<b><size=11>" + text + "</size></b>";
+            if (state) text = "\u25BC " + text;
+            else text = "\u25BA " + text;
+            if (!GUILayout.Toggle(true, text, "dragtab", GUILayout.MinWidth(20f))) state = !state;
+
+            if (GUI.changed) EditorPrefs.SetBool(key, state);
+
+            GUILayout.Space(2f);
+            GUILayout.EndHorizontal();
+            GUI.backgroundColor = Color.white;
+            if (!state) GUILayout.Space(3f);
+            return state;
+        }
+
+    }
+}

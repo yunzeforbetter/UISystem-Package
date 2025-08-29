@@ -1,0 +1,14 @@
+{
+  "name": "com.framework.uisystem",
+  "version": "1.0.0",
+  "displayName": "com.framework.uisystem",
+  "unity": "2022.3",
+  "documentationUrl": "https://example.com/",
+  "changelogUrl": "https://example.com/changelog.html",
+  "licensesUrl": "https://example.com/licensing.html",
+  "keywords": [],
+  "author": {
+    "name": "yunze"
+  },
+  "description": "uisystem"
+}
