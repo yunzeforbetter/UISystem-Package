@@ -7,8 +7,8 @@ using UnityEngine.U2D;
 namespace UISystem
 {
     /// <summary>
-    /// Í¼¼¯¾«ÁéÓ³ÉäÊı¾İÀà
-    /// ¼ÇÂ¼¾«ÁéËù¶ÔÓ¦µÄÍ¼¼¯ĞÅÏ¢
+    /// å›¾é›†ç²¾çµæ˜ å°„æ•°æ®ç±»
+    /// è®°å½•ç²¾çµæ‰€å¯¹åº”çš„å›¾é›†ä¿¡æ¯
     /// </summary>
     [CreateAssetMenu(menuName = "UI/UIAtlasSpriteMapData")]
     public class UIAtlasSpriteMapData : SerializedScriptableObject
@@ -21,11 +21,11 @@ namespace UISystem
         private List<AtlasSpriteData> atlasSrpiteDatas = new();
 
         /// <summary>
-        /// ³õÊ¼»¯
+        /// åˆå§‹åŒ–
         /// </summary>
         public void Init()
         {
-            //¹¹½¨Ó³Éä±í
+            //æ„å»ºæ˜ å°„è¡¨
             spriteMap.Clear();
             foreach (AtlasSpriteData data in atlasSrpiteDatas)
             {
@@ -36,7 +36,7 @@ namespace UISystem
             }
         }
 
-        [Button("Éú³É")]
+        [Button("ç”Ÿæˆ")]
         public void InitEditor()
         {
 #if UNITY_EDITOR
@@ -53,7 +53,7 @@ namespace UISystem
 #endif
         }
 
-        //Éú³ÉÊı¾İ
+        //ç”Ÿæˆæ•°æ®
         private void InitData(List<SpriteAtlas> list)
         {
             atlasSrpiteDatas.Clear();
@@ -84,7 +84,7 @@ namespace UISystem
         }
 
         /// <summary>
-        /// »ñÈ¡¾«Áé¶ÔÓ¦µÄÍ¼¼¯Ãû³Æ
+        /// è·å–ç²¾çµå¯¹åº”çš„å›¾é›†åç§°
         /// </summary>
         /// <param name="spriteName"></param>
         /// <returns></returns>
@@ -99,7 +99,7 @@ namespace UISystem
     }
 
     /// <summary>
-    /// Í¼¼¯¾«ÁéÊı¾İ
+    /// å›¾é›†ç²¾çµæ•°æ®
     /// </summary>
     [Serializable]
     public class AtlasSpriteData

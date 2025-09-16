@@ -7,16 +7,16 @@ using UnityEngine.UI;
 namespace UISystem
 {
     /// <summary>
-    /// »ùÓÚÍ¼¼¯µÄImage¿Ø¼ş
+    /// åŸºäºå›¾é›†çš„Imageæ§ä»¶
     /// </summary>
     public class UIAtlasImage : Image
     {
         /// <summary>
-        /// Í¼¼¯
+        /// å›¾é›†
         /// </summary>
         private SpriteAtlas spriteAtlas = null;
 
-        [LabelText("×ÔÊÊÓ¦´óĞ¡")]
+        [LabelText("è‡ªé€‚åº”å¤§å°")]
         [SerializeField] private bool setNative = false;
         public bool SetNative
         {
@@ -37,7 +37,7 @@ namespace UISystem
 
         private bool isGray = false;
         /// <summary>
-        /// ÖÃ»Ò±êÖ¾;
+        /// ç½®ç°æ ‡å¿—;
         /// </summary>
         public bool IsGray
         {
@@ -114,14 +114,14 @@ namespace UISystem
 
         private void SetAtlasSpriteInternal(string atlasName, string spriteName)
         {
-            // Í¼¼¯Î´±ä£¬¾ÍÖ±½ÓÉèÖÃ¾«Áé;
+            // å›¾é›†æœªå˜ï¼Œå°±ç›´æ¥è®¾ç½®ç²¾çµ;
             if (spriteAtlas != null && atlasName == spriteAtlas.name)
             {
                 SetSpriteInternal(spriteName);
                 return;
             }
 
-            // ¼ÓÔØ¹ı³ÌÖÖ;
+            // åŠ è½½è¿‡ç¨‹ç§;
             this.spriteName = spriteName;
             if (dynamicAtlasName != atlasName)
             {

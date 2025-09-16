@@ -5,25 +5,25 @@ using UnityEngine;
 namespace UISystem
 {
     /// <summary>
-    /// UI ShaderĞ§¹û
+    /// UI Shaderæ•ˆæœ
     /// </summary>
     public static class UIShaderEffect
     {
-        // »Ò¶È;
+        // ç°åº¦;
         private static Material grayMat;
 
         /// <summary>
-        /// ´´½¨ÖÃ»Ò²ÄÖÊÇò
+        /// åˆ›å»ºç½®ç°æè´¨çƒ
         /// </summary>
         /// <returns></returns>
         private static Material GetGrayMat()
         {
             if (grayMat == null)
             {
-                Shader shader = Shader.Find("Custom/UI-Gray"); //»ñÈ¡ÖÃ»Òshader  UI_Gray.shader
+                Shader shader = Shader.Find("Custom/UI-Gray"); //è·å–ç½®ç°shader  UI_Gray.shader
                 if (shader == null)
                 {
-                    Debug.LogError($"¼ÓÔØÖÃ»ÒshaderÊ§°Ü  ÇëÅÅ²é");
+                    Debug.LogError($"åŠ è½½ç½®ç°shaderå¤±è´¥  è¯·æ’æŸ¥");
                     return null;
                 }
                 Material mat = new Material(shader);
@@ -34,7 +34,7 @@ namespace UISystem
         }
 
         /// <summary>
-        /// Í¼Æ¬ÖÃ»Ò
+        /// å›¾ç‰‡ç½®ç°
         /// </summary>
         /// <param name="img"></param>
         public static void SetUIGray(MaskableGraphic img)
@@ -46,7 +46,7 @@ namespace UISystem
         }
 
         /// <summary>
-        /// Í¼Æ¬»Ö¸´;
+        /// å›¾ç‰‡æ¢å¤;
         /// </summary>
         /// <param name="img"></param>
         public static void Recovery(MaskableGraphic img)

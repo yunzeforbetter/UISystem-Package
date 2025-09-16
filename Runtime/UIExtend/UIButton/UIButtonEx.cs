@@ -8,7 +8,7 @@ using UnityEngine.UI;
 namespace UISystem
 {
     /// <summary>
-    /// °´Å¥À©Õ¹
+    /// æŒ‰é’®æ‰©å±•
     /// </summary>
     public class UIButtonEx : Button
     {
@@ -16,13 +16,13 @@ namespace UISystem
         private UIAtlasImage uiAtlasImage;
         private Material oldImageMaterial;
 
-        [SerializeField, LabelText("°´Å¥µã»÷¼ä¸ôÊ±¼ä(Ãë)")]
+        [SerializeField, LabelText("æŒ‰é’®ç‚¹å‡»é—´éš”æ—¶é—´(ç§’)")]
         private float clickCd = 0.5f;
-        //ÏÂ´Îµã»÷µÄÊ±¼ä
+        //ä¸‹æ¬¡ç‚¹å‡»çš„æ—¶é—´
         private float nextClickTime;
 
         /// <summary>
-        /// ÖÃ»Ò²»½ûÓÃ
+        /// ç½®ç°ä¸ç¦ç”¨
         /// </summary>
         private bool _gray = false;
 
@@ -79,10 +79,10 @@ namespace UISystem
         }
 
         /// <summary>
-        /// Ìí¼Óµã»÷ÊÂ¼ş
+        /// æ·»åŠ ç‚¹å‡»äº‹ä»¶
         /// </summary>
-        /// <param name="action">»Øµ÷ÊÂ¼ş</param>
-        /// <param name="clearAll">ÊÇ·ñÏÈÇåÀíÖ®Ç°µÄËùÓĞ¼àÌı</param>
+        /// <param name="action">å›è°ƒäº‹ä»¶</param>
+        /// <param name="clearAll">æ˜¯å¦å…ˆæ¸…ç†ä¹‹å‰çš„æ‰€æœ‰ç›‘å¬</param>
         public void AddListener(UnityAction action,bool clearAll = true)
         {
             if (clearAll)
@@ -93,7 +93,7 @@ namespace UISystem
         }
 
         /// <summary>
-        /// ÒÆ³ıµã»÷ÊÂ¼ş
+        /// ç§»é™¤ç‚¹å‡»äº‹ä»¶
         /// </summary>
         /// <param name="action"></param>
         public void RemoveListener(UnityAction action)
@@ -103,7 +103,7 @@ namespace UISystem
         }
 
         /// <summary>
-        /// ÉèÖÃÎÄ±¾ÄÚÈİ
+        /// è®¾ç½®æ–‡æœ¬å†…å®¹
         /// </summary>
         /// <param name="text"></param>
         public void SetText(string text)
@@ -112,7 +112,7 @@ namespace UISystem
         }
 
         /// <summary>
-        /// ÉèÖÃÍ¼Æ¬
+        /// è®¾ç½®å›¾ç‰‡
         /// </summary>
         /// <param name="icon"></param>
         public void SetImage(string icon)
@@ -132,7 +132,7 @@ namespace UISystem
         }
 
         /// <summary>
-        /// ÖÃ»Ò²¢½ûÓÃ
+        /// ç½®ç°å¹¶ç¦ç”¨
         /// </summary>
         /// <param name="enable"></param>
         public void SetExButtonEnable(bool enable)
