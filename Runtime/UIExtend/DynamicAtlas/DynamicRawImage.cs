@@ -4,21 +4,19 @@ using UnityEngine.UI;
 
 public class DynamicRawImage : RawImage
 {
-    //[SerializeField] private DynamicAtlasGroup m_Group = DynamicAtlasGroup.Size_2048;
     [Tooltip("可以设置默认加载图片")]
-    [SerializeField] private string mCurPath;
-    [SerializeField] private bool mIsGray = false;
-    [SerializeField] private bool m_IsSyn = false;
-    [SerializeField] private bool m_IsNative = false;
+    [SerializeField] private string curPath;
+    [SerializeField] private bool isGray = false;
+    [SerializeField] private bool isSyn = false;
+    [SerializeField] private bool isNative = false;
 	
-    private DynamicAtlas mAtlas;
-    private string mLastIcon;
-    private bool mLastIsGray;
-    private bool mLoadFlag = false;
+    private string lastIcon;
+    private bool lastIsGray;
+    private bool loadFlag = false;
 
-    private bool mSetFlag = false;
+    private bool setFlag = false;
 
-    private bool mIsShow = false;
+    private bool isShow = false;
     
 #if UNITY_EDITOR
     private bool editorCleanFlag = true;
@@ -41,7 +39,7 @@ public class DynamicRawImage : RawImage
 
     protected override void OnEnable()
     {
-        mIsShow = true;
+        isShow = true;
         
         base.OnEnable();
 #if UNITY_EDITOR
@@ -53,7 +51,7 @@ public class DynamicRawImage : RawImage
 
     protected override void OnDisable()
     {
-        mIsShow = false;
+        isShow = false;
         
         base.OnDisable();
         ReleaseCurIcon();
@@ -74,7 +72,7 @@ public class DynamicRawImage : RawImage
         if (!Application.isPlaying)
             return;
         #endif
-        if (!mSetFlag)
+        if (!setFlag)
         {
             toFill.Clear();
         }
@@ -82,11 +80,11 @@ public class DynamicRawImage : RawImage
 
     public void SetNative(bool native)
     {
-        if (m_IsNative == native)
+        if (isNative == native)
             return;
 
-        m_IsNative = native;
-        if (native == false || !mSetFlag)
+        isNative = native;
+        if (native == false || !setFlag)
             return;
 
         SetNativeSize();
@@ -94,47 +92,47 @@ public class DynamicRawImage : RawImage
 
     public void SetGray(bool gray)
     {
-        if (mIsGray == gray)
+        if (isGray == gray)
             return;
 
-        SetIcon(mCurPath, gray, m_IsSyn);
+        SetIcon(curPath, gray, isSyn);
     }
 
     public void SetIcon(string icon, bool isGray = false, bool syn = false)
     {
-        if (atlas == null)
+        if (Atlas == null)
             return;
 
-        m_IsSyn = syn;
+        isSyn = syn;
         
         // 当前加载的没有变化;
-        if (icon == mCurPath && isGray == mIsGray && mLoadFlag)
+        if (icon == curPath && isGray == this.isGray && loadFlag)
             return;
 
         ReleaseLastIcon();
 	    
-        if (mLoadFlag)
+        if (loadFlag)
         {
             if (string.IsNullOrEmpty(icon))
             {
                 ReleaseCurIcon();
-                mCurPath = null;
-                mIsGray = isGray;
+                curPath = null;
+                this.isGray = isGray;
                 return;
             }
 		
             // 缓存住在回调成功后再移除，防止切Icon显示时闪烁;
-            mLastIcon = mCurPath;
-            mLastIsGray = mIsGray;
+            lastIcon = curPath;
+            lastIsGray = this.isGray;
         }
 
-        mCurPath = icon;
-        mIsGray = isGray;
+        curPath = icon;
+        this.isGray = isGray;
 
-        if (!mIsShow) return;
+        if (!isShow) return;
 	    
-        mLoadFlag = true;
-        atlas.SetTexture(mCurPath, mIsGray, m_IsSyn, LoadCallBack);
+        loadFlag = true;
+        Atlas.SetTexture(curPath, this.isGray, isSyn, LoadCallBack);
     }
 
     private void LoadCallBack(Material mater, Rect uv)
@@ -144,49 +142,51 @@ public class DynamicRawImage : RawImage
         material = mater;
         uvRect = uv;
 
-        mSetFlag = mater != null;
-        if (mSetFlag && m_IsNative)
+        setFlag = mater != null;
+        if (setFlag && isNative)
         {
             SetNativeSize();
         }
     }
-    
-    private DynamicAtlas atlas
+
+
+    private DynamicAtlas dynamicAtlas;
+    public DynamicAtlas Atlas
     {
         get
         {
-            if (mAtlas == null)
+            if (dynamicAtlas == null)
             {
-                mAtlas = DynamicAtlasManager.Instance.GetDynamicAtlas(GetGroup());
+                dynamicAtlas = DynamicAtlasManager.Instance.GetDynamicAtlas(GetGroup());
             }
-            return mAtlas;
+            return dynamicAtlas;
         }
     }
 
     private void LoadCurIcon()
     {
-        if (!mLoadFlag && !string.IsNullOrEmpty(mCurPath))
+        if (!loadFlag && !string.IsNullOrEmpty(curPath))
         {
-            SetIcon(mCurPath, mIsGray, m_IsSyn);
+            SetIcon(curPath, isGray, isSyn);
         }
     }
 
     private void ReleaseLastIcon()
     {
-        if (string.IsNullOrEmpty(mLastIcon))
+        if (string.IsNullOrEmpty(lastIcon))
             return;
 		
-        atlas.RemoveImage(mLastIcon, mLastIsGray, LoadCallBack);
-        mLastIcon = null;
+        Atlas.RemoveImage(lastIcon, lastIsGray, LoadCallBack);
+        lastIcon = null;
     }
 
     private void ReleaseCurIcon()
     {
-        if (!mLoadFlag)
+        if (!loadFlag)
             return;
 
-        atlas.RemoveImage(mCurPath, mIsGray, LoadCallBack);
-        mLoadFlag = false;
-        mSetFlag = false;
+        Atlas.RemoveImage(curPath, isGray, LoadCallBack);
+        loadFlag = false;
+        setFlag = false;
     }
 }

@@ -111,7 +111,7 @@ public class DynamicSpriteRenderer : MonoBehaviour
         {
             m_SpriteRender.sprite = null;
         }
-//        if (mSetFlag && m_IsNative)
+//        if (setFlag && isNative)
 //        {
 //            SetNativeSize();
 //        }

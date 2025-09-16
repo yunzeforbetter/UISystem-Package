@@ -90,6 +90,7 @@ public class BlurController : MonoBehaviour
             RenderTexture.ReleaseTemporary(_blurRT1);
             _blurRT1 = null;
         }
+        EnableHideView(true);
     }
 
     public void SetTopPanel(long ui_id, Action<Transform> callBack)

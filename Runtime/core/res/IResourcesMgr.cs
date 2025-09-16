@@ -66,13 +66,6 @@ namespace UISystem
         /// <param name="path">资源路径</param>
         /// <returns>资源是否存在</returns>
         bool HasAsset(string path);
-
-        /// <summary>
-        /// 预加载资源 - 提前加载资源到内存中
-        /// </summary>
-        /// <param name="path">资源路径</param>
-        /// <param name="callback">完成回调</param>
-        void PreloadAsset(string path, Action<bool> callback = null);
     }
 
     /// <summary>
