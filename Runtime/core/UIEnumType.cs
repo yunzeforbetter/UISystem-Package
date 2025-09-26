@@ -20,7 +20,8 @@ namespace UISystem
     {
         HeadLayer = 0, //头顶气泡层
         FunctionLayer = 1000, //默认功能层
-        MessageLayer = 2000, //消息层
+        FunctionLayerEx = 2000, //功能扩展层
+        MessageLayer = 3000, //消息层
     }
 
 }
