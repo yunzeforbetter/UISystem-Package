@@ -141,6 +141,7 @@ namespace UISystem
                     //进入到这里说明异常，拿着脏数据想要进行加载，应该清理掉脏数据，重新申请
                     data.Recycle();
                     _getterMap.Remove(key);
+                    _rectangleMap.Remove(key);
                     //if (data.loader == null || data.loader.isError())
                     //{
                     //    callback(null, Rect.zero);
@@ -280,12 +281,12 @@ namespace UISystem
                 if (imageData.IsUnused())
                 {
                     _getterMap.Remove(key);
-                 
+                    _rectangleMap.Remove(key);
                     RecycleAssetReq(imageData.loader);
                     DynamicAtlasManager.Instance.ReleaseGetImageData(imageData);
                 }
             }
-
+            callBack?.Invoke(null, Rect.zero);
             // 下次重新分配;
 //            if (_getterMap.Count == 0)
 //            {

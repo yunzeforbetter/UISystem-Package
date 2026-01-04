@@ -58,6 +58,9 @@ namespace UISystem
             isGray = false;
             texIndex = -1;
             loader = null;
+            key = null;
+            url = null;
+            rect = Rect.zero;
         }
     }
 
