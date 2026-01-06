@@ -175,9 +175,9 @@ public class DynamicRawImage : RawImage
     {
         if (string.IsNullOrEmpty(lastIcon))
             return;
-		
-        Atlas.RemoveImage(lastIcon, lastIsGray, LoadCallBack);
-        lastIcon = null;
+		string path = lastIcon;
+		lastIcon = null
+        Atlas.RemoveImage(path, lastIsGray, LoadCallBack);
     }
 
     private void ReleaseCurIcon()
